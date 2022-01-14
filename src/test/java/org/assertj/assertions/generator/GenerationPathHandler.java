@@ -60,8 +60,12 @@ public class GenerationPathHandler extends TemporaryFolder {
     this.resourcesDir = resourcesDir;
 
     final String currentClasspath = getClasspathFromClassloader(ClassLoader.getSystemClassLoader());
-    compiler = Compiler.javac()
+    if (currentClasspath.isEmpty()) {
+      compiler = Compiler.javac();
+    } else {
+      compiler = Compiler.javac()
                        .withOptions("-classpath", currentClasspath);
+    }
   }
 
   public Path getResourcesDir() {
